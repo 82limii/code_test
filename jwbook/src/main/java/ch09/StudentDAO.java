@@ -32,10 +32,10 @@ public class StudentDAO {
 		}
 	}
 	
-	public void insert(Student s) {
+	public int insert(Student s) {
 		open();
 		String sql = "INSERT INTO student(username, univ, birth, email) VALUES(?,?,?,?)";
-		
+		int cnt = 0;
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, s.getUsername());
@@ -43,12 +43,13 @@ public class StudentDAO {
 			pstmt.setDate(3, s.getBirth());
 			pstmt.setString(4, s.getEmail());
 			
-			pstmt.executeUpdate();
+			cnt = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close();
 		}
+		return cnt;
 	}
 	
 	public List<Student> getAll() {
@@ -75,5 +76,17 @@ public class StudentDAO {
 			close();
 		}
 		return students;
+	}
+	
+	public static void main(String[] args) {
+		StudentDAO dao = new StudentDAO();
+		Student vo = new Student();
+		
+		vo.setUsername("아아");
+		vo.setUniv("대학좀");
+		vo.setEmail("ddd");
+		
+		int cnt = dao.insert(vo);
+		System.out.println(cnt);
 	}
 }

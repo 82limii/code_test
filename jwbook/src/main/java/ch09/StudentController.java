@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 @WebServlet("/studentControl")
 public class StudentController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -20,6 +22,7 @@ public class StudentController extends HttpServlet {
 	}
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		String view = "";
 		
@@ -37,15 +40,15 @@ public class StudentController extends HttpServlet {
 	private String insert(HttpServletRequest request, HttpServletResponse response) {
 		Student s = new Student();
 		try {
-//			BeanUtils.populate(s, request.getParameterMap());
+			BeanUtils.populate(s, request.getParameterMap());
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		return null;
+		dao.insert(s);
+		return list(request,response);
 	}
 
 	private String list(HttpServletRequest request, HttpServletResponse response) {
-		request.setAttribute("stuendts", dao.getAll());
+		request.setAttribute("students", dao.getAll());
 		return "studentInfo.jsp";
 	}
 
