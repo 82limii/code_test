@@ -1,6 +1,8 @@
 package code_practice;
 
-public class NewId {
+public class NewId02 {
+	StringBuffer buffer = new StringBuffer();
+
 	public String solution(String new_id) {
 		String answer = "";
 //      1단계 new_id의 모든 대문자를 대응되는 소문자로 치환합니다.
@@ -11,14 +13,7 @@ public class NewId {
 		new_id = new_id.replaceAll(match, "");
 		
 //      3단계 new_id에서 마침표(.)가 2번 이상 연속된 부분을 하나의 마침표(.)로 치환합니다.
-		String dots = "..";
-		String two = "..";
-		
-		for (int i = 1; i < new_id.length(); i++) {
-			new_id = new_id.replace(dots, ".");
-			new_id = new_id.replace(two, ".");
-			dots += ".";
-		}
+		new_id = new_id.replaceAll("[.]{2,}", ".");
 		
 //      4단계 new_id에서 마침표(.)가 처음이나 끝에 위치한다면 제거합니다.
 		StringBuffer new_idBuffer = null;
@@ -61,11 +56,34 @@ public class NewId {
 		
 		answer = new_id;
 		return answer;
+    }
+	
+	public String deleteFirstDot(String str) {
+		if (str != "" && str.indexOf(".") == 0) { // 4단계
+        	buffer.append(str);
+        	buffer.deleteCharAt(0);
+        	str = buffer.toString();
+        	if (buffer.length() != 0 ) {
+        		buffer.delete(0, buffer.length());        		
+        	}
+		}
+		return str;
+	}
+	public String deleteLastDot(String str) {
+		if ((str != "") && (str.lastIndexOf(".") == str.length() - 1)) {
+        	buffer.append(str);
+        	buffer.deleteCharAt(buffer.length() - 1);
+        	str = buffer.toString();
+        	if (buffer.length() != 0 ) {
+        		buffer.delete(0, buffer.length());
+        	}
+        }
+		return str;
 	}
 
 	public static void main(String[] args) {
-		NewId method = new NewId();
-		String new_id = "bat.y.abcdefghijklm";
+		NewId02 method = new NewId02();
+		String new_id = ".";
 		String answer = method.solution(new_id);
 		System.out.println(answer);
 	}
